@@ -104,4 +104,7 @@ function futureCondition(lat, lon)
             $("#fiveDay").append(futureCard);
         }
     }); 
-}                
+} 
+
+$("#searchBtn").on("click", function(event) {
+    event.preventDefault();
