@@ -123,3 +123,19 @@ $("#searchBtn").on("click", function(event) {
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
     console.log(searchHistoryList);
 });
+
+$(document).on("click", ".list-group-item", function() {
+    var listCity = $(this).text();
+    currentCondition(listCity);
+});
+
+$(document).ready(function() {
+    var searchHistoryArr = JSON.parse(localStorage.getItem("city"));
+
+    if (searchHistoryArr !== null) {
+        var lastSearchedIndex = searchHistoryArr.length - 1;
+        var lastSearchedCity = searchHistoryArr[lastSearchedIndex];
+        currentCondition(lastSearchedCity);
+        console.log(`Last searched city: ${lastSearchedCity}`);
+    }
+});
