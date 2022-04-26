@@ -66,10 +66,9 @@ function currentCondition(city) {
 });
 }
 
-function futureCondition(lat, lon)
+function futureCondition(lat, lon) {
 
     var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
-
 
     $.ajax({
         url: futureURL,
@@ -77,18 +76,20 @@ function futureCondition(lat, lon)
     }).then(function(futureResponse) {
         console.log(futureResponse);
         $("#fiveDay").empty();
-
+        
         for (let i = 1; i < 6; i++) {
             var cityInfo = {
                 date: futureResponse.daily[i].dt,
                 icon: futureResponse.daily[i].weather[0].icon,
                 temp: futureResponse.daily[i].temp.day,
                 humidity: futureResponse.daily[i].humidity
+            };
 
-                var currDate = moment.unix(cityInfo.date).format("MM/DD/YYYY");
-                var iconURL = `<img src="https://openweathermap.org/img/w/${cityInfo.icon}.png" alt="${futureResponse.daily[i].weather[0].main}" />`;
-                
-                var futureCard = $(`
+            var currDate = moment.unix(cityInfo.date).format("MM/DD/YYYY");
+            var iconURL = `<img src="https://openweathermap.org/img/w/${cityInfo.icon}.png" alt="${futureResponse.daily[i].weather[0].main}" />`;
+
+
+            var futureCard = $(`
                 <div class="pl-3">
                     <div class="card pl-3 pt-3 mb-3 bg-primary text-light" style="width: 12rem;>
                         <div class="card-body">
@@ -104,7 +105,21 @@ function futureCondition(lat, lon)
             $("#fiveDay").append(futureCard);
         }
     }); 
-} 
+}
 
 $("#searchBtn").on("click", function(event) {
     event.preventDefault();
+
+    var city = $("#enterCity").val().trim();
+    currentCondition(city);
+    if (!searchHistoryList.includes(city)) {
+        searchHistoryList.push(city);
+        var searchedCity = $(`
+            <li class="list-group-item">${city}</li>
+            `);
+        $("#searchHistory").append(searchedCity);
+    };
+
+    localStorage.setItem("city", JSON.stringify(searchHistoryList));
+    console.log(searchHistoryList);
+});
