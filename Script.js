@@ -65,3 +65,10 @@ function currentCondition(city) {
     });
 });
 }
+
+function futureCondition(lat, lon)
+
+    var futureURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=current,minutely,hourly,alerts&appid=${apiKey}`;
+
+
+    
